@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_phones">
+        <item>911</item>
+        <item>Poison Control</item>
+        <item>Suicide Hotline</item>
+    </string-array>
+</resources>
