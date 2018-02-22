@@ -19,6 +19,7 @@ public class SymptomLogActivity extends AppCompatActivity {
     private ActionMenuView amvMenu;
     Intent symptom_intent;
     Intent home_intent;
+    Intent add_symptom;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -47,6 +48,7 @@ public class SymptomLogActivity extends AppCompatActivity {
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         home_intent = new Intent(this, MainActivity.class);
+        add_symptom = new Intent(this, AddSymptomActivity.class);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.myToolbar);
         toolbar.setTitle("Symptom Log");
@@ -56,8 +58,7 @@ public class SymptomLogActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(add_symptom);
             }
         });
     }

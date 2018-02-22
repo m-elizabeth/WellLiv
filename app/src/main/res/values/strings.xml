@@ -21,6 +21,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
+    <string name="title_emergency">Emergency Numbers</string>
     <string name="title_information">Information</string>
     <string name="title_resources">Resources</string>
     <string name="title_symptoms">Symptom Log</string>
@@ -30,7 +31,15 @@
     <string name="title_assault">Sexual Assault</string>
     <string name="title_depression">Depression</string>
 
+    <string name="title_hotlines">Hotlines</string>
+    <string name="title_psychotherapy">Psychotherapy</string>
+    <string name="title_supportgroups">Support Groups</string>
+
     <string name="text_filler">Text here</string>
     <string name="title_activity_symptom_log">SymptomLogActivity</string>
+    <string name="title_add_symptom">Add Symptom</string>
+
+    <string name="add_header">How are you feeling today?</string>
+
 
 </resources>

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    mTextMessage.setText(R.string.title_emergency);
                     setListHome();
                     return true;
                 case R.id.navigation_info:
@@ -65,12 +65,14 @@ public class MainActivity extends AppCompatActivity {
         list_array.add("911");
         list_array.add("Poison Control");
         list_array.add("Suicide Hotline");
+        mTextMessage.setText(R.string.title_emergency);
         mainPhoneList = (ListView) findViewById(R.id.main_list);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 list_array);
         mainPhoneList.setAdapter(arrayAdapter);
+        /*This is where setOnItemClickListener for calling is set*/
     }
 
     void setListInfo(){
