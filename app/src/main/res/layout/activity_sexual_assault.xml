@@ -12,25 +12,18 @@
         android:layout_height="wrap_content"
         layout="@layout/my_toolbar"/>
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="368dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp" />
-
-    <EditText
-        android:id="@+id/editText"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="56dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_marginEnd="210dp"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="66dp"
+        android:text="@string/text_filler"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/myToolbar"
+        android:layout_marginRight="210dp"
+        android:layout_marginLeft="115dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/nav_header_vertical_spacing"
             android:text="@string/text_filler"
+            android:textColor="@color/black"
             android:textSize="18sp" />
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
