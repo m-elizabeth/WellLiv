@@ -4,15 +4,22 @@
 
     <item
         android:id="@+id/action_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home"
-        android:iconTint="@android:color/white"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_home_white_24dp"
+        android:title="@string/title_emergency"
+        android:tint="@color/white"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_symptoms"
         android:icon="@drawable/ic_date_range_black_24dp"
         android:title="@string/title_symptoms"
+        android:tint="@color/white"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="@string/title_settings"
+        android:tint="@color/white"
+        app:showAsAction="never"/>
 
 </menu>

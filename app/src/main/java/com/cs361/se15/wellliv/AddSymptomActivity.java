@@ -2,8 +2,11 @@ package com.cs361.se15.wellliv;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +30,7 @@ public class AddSymptomActivity extends AppCompatActivity {
     private ActionMenuView amvMenu;
     Intent symptom_intent;
     Intent home_intent;
+    Intent settings_intent;
     private static final String NAME = "NAME";
     private SimpleExpandableListAdapter mAdapter;
     ExpandableListView simpleExpandableListView;
@@ -52,6 +56,9 @@ public class AddSymptomActivity extends AppCompatActivity {
             case R.id.action_home:
                 startActivity(home_intent);
                 break;
+            case R.id.action_settings:
+                startActivity(settings_intent);
+                break;
         }
         return true;
     }
@@ -63,9 +70,12 @@ public class AddSymptomActivity extends AppCompatActivity {
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         home_intent = new Intent(this, MainActivity.class);
+        settings_intent = new Intent(this, SettingsActivity.class);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.myToolbar);
-        toolbar.setTitle("Add Symptom");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolbar);
+        toolbar.setTitle("Add Symptoms");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
         setSupportActionBar(toolbar);
 
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
@@ -106,7 +116,12 @@ public class AddSymptomActivity extends AppCompatActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
                 int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(groupPosition));
-                parent.setItemChecked(index, true);
+                if(parent.isItemChecked(index)){
+                    parent.setItemChecked(index, false);
+                }
+                else {
+                    parent.setItemChecked(index, true);
+                }
 
                 return false;
             }
@@ -116,7 +131,7 @@ public class AddSymptomActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                // display a toast with child name whenever a user clicks on a child item
+                int cind = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(childPosition));
                 /*Toast.makeText(getApplicationContext(), "Child Name Is :" + childItems[groupPosition][childPosition], Toast.LENGTH_LONG).show();*/
                 return false;
             }
