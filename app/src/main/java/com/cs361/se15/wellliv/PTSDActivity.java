@@ -1,5 +1,6 @@
 package com.cs361.se15.wellliv;
 
+import android.graphics.PorterDuff;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ public class PTSDActivity extends AppCompatActivity {
 
     Intent symptom_intent;
     Intent home_intent;
+    Intent settings_intent;
     private android.support.v7.widget.ActionMenuView amv_Menu;
 
     @Override
@@ -33,6 +35,9 @@ public class PTSDActivity extends AppCompatActivity {
             case R.id.action_home:
                 startActivity(home_intent);
                 break;
+            case R.id.action_settings:
+                startActivity(settings_intent);
+                break;
         }
         return true;
     }
@@ -44,10 +49,13 @@ public class PTSDActivity extends AppCompatActivity {
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         home_intent = new Intent(this, MainActivity.class);
+        settings_intent = new Intent(this, SettingsActivity.class);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.myToolbar);
 
         toolbar.setTitle("PTSD");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
         setSupportActionBar(toolbar);
     }
 }

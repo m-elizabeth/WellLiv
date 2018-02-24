@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class DepressionActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     Intent symptom_intent;
     Intent home_intent;
@@ -40,15 +41,16 @@ public class DepressionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_depression);
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.myToolbar);
-        toolbar.setTitle("Depression");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_settings);
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         home_intent = new Intent(this, MainActivity.class);
         settings_intent = new Intent(this, SettingsActivity.class);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolbar);
+        toolbar.setTitle("Settings");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
+        setSupportActionBar(toolbar);
     }
 }

@@ -1,5 +1,6 @@
 package com.cs361.se15.wellliv;
 
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Intent dep_intent;
     Intent sa_intent;
     Intent symptom_intent;
+    Intent settings_intent;
     String ptsd = new String("PTSD");
     String abuse = new String("Abuse");
     String assault = new String("Sexual Assault");
@@ -136,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_symptoms:
                 startActivity(symptom_intent);
                 break;
+            case R.id.action_settings:
+                startActivity(settings_intent);
+                break;
         }
         return true;
     }
@@ -146,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.myToolbar);
         toolbar.setTitle("WellLiv");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
         setSupportActionBar(toolbar);
 
         ptsd_intent = new Intent(this, PTSDActivity.class);
@@ -153,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         dep_intent = new Intent(this, DepressionActivity.class);
         sa_intent = new Intent(this, SexualAssaultActivity.class);
         symptom_intent = new Intent(this, SymptomLogActivity.class);
+        settings_intent = new Intent(this, SettingsActivity.class);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

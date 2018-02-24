@@ -1,5 +1,6 @@
 package com.cs361.se15.wellliv;
 
+import android.graphics.PorterDuff;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ public class AbuseActivity extends AppCompatActivity {
 
     Intent home_intent;
     Intent symptom_intent;
+    Intent settings_intent;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -29,6 +31,9 @@ public class AbuseActivity extends AppCompatActivity {
             case R.id.action_home:
                 startActivity(home_intent);
                 break;
+            case R.id.action_settings:
+                startActivity(settings_intent);
+                break;
         }
         return true;
     }
@@ -40,9 +45,12 @@ public class AbuseActivity extends AppCompatActivity {
 
         home_intent = new Intent(this, MainActivity.class);
         symptom_intent = new Intent(this, SymptomLogActivity.class);
+        settings_intent = new Intent(this, SettingsActivity.class);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.myToolbar);
         toolbar.setTitle("Abuse");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
         setSupportActionBar(toolbar);
     }
 
