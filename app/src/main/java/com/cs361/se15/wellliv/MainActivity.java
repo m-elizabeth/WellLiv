@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.content.Intent;
+import android.widget.Toast;
+import android.net.Uri;
 import android.content.Intent;
 
 import java.util.ArrayList;
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private static final String TAG = "MainActivity";
+
     void setListHome(){
         list_array.clear();
         list_array.add("Emergency Phone Numbers:");
@@ -75,6 +81,38 @@ public class MainActivity extends AppCompatActivity {
                 list_array);
         mainPhoneList.setAdapter(arrayAdapter);
         /*This is where setOnItemClickListener for calling is set*/
+
+        mainPhoneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Log.d(TAG, "onItemClick: number: " + list_array.get(i));
+
+                //Phone numbers
+//                String nineOneOne = "911";
+//                String poisonControl = "000";
+//                String suicideHotline = "111";
+//
+//                //get item clicked from list
+//                int number = list_array.get(i);
+//
+//                switch(number) {
+//                    case 0: return "";
+//                    case 1: return call(nineOneOne);
+//                    case 2: return call(poisonControl);
+//                    case 3: return call(suicideHotline);
+//                }
+//
+//                call(phoneNum) {
+//                    Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+//                    dialIntent.setData(Uri.parse("tel:5038518074"));
+//                    startActivity(dialIntent);
+//                }
+
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+                dialIntent.setData(Uri.parse("tel:5038518074"));
+                startActivity(dialIntent);
+            }
+        });
     }
 
     void setListInfo(){
