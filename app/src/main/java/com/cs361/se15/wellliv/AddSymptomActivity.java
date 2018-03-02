@@ -20,6 +20,8 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,22 @@ public class AddSymptomActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public String loadJSON(String date){
+        String json = null;
+        try{
+            InputStream is = getAssets().open("symptoms.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        }
+        catch(IOException e){
+            return null;
+        }
+        return json;
     }
 
     @Override
