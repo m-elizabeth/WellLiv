@@ -37,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
     Intent sa_intent;
     Intent symptom_intent;
     Intent settings_intent;
+    Intent hotline_intent;
     String ptsd = new String("PTSD");
     String abuse = new String("Abuse");
     String assault = new String("Sexual Assault");
     String depression = new String("Depression");
+    String hotlines = new String("Hotlines");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -164,6 +166,25 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 list_array);
         mainPhoneList.setAdapter(arrayAdapter);
+
+        mainPhoneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = list_array.get(i);
+                if(hotlines.equals(selectedItem)){
+                    startActivity(hotline_intent);
+                }
+//                if(abuse.equals(selectedItem)){
+//                    startActivity(abuse_intent);
+//                }
+//                if(depression.equals(selectedItem)){
+//                    startActivity(dep_intent);
+//                }
+//                if(assault.equals(selectedItem)){
+//                    startActivity(sa_intent);
+//                }
+            }
+        });
     }
 
     @Override
@@ -202,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         sa_intent = new Intent(this, SexualAssaultActivity.class);
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         settings_intent = new Intent(this, SettingsActivity.class);
+        hotline_intent = new Intent(this, HotlineActivity.class);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
