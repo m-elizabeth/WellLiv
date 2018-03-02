@@ -67,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    void call(String phoneNum){
+        Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+        dialIntent.setData(Uri.parse("tel:" + phoneNum));
+        startActivity(dialIntent);
+    }
+
     void setListHome(){
         list_array.clear();
         list_array.add("Emergency Phone Numbers:");
@@ -85,32 +91,29 @@ public class MainActivity extends AppCompatActivity {
         mainPhoneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Log.d(TAG, "onItemClick: number: " + list_array.get(i));
+                Log.d(TAG, "onItemClick: number: " + list_array.get(i));
 
                 //Phone numbers
-//                String nineOneOne = "911";
-//                String poisonControl = "000";
-//                String suicideHotline = "111";
-//
-//                //get item clicked from list
-//                int number = list_array.get(i);
-//
-//                switch(number) {
-//                    case 0: return "";
-//                    case 1: return call(nineOneOne);
-//                    case 2: return call(poisonControl);
-//                    case 3: return call(suicideHotline);
-//                }
-//
-//                call(phoneNum) {
-//                    Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-//                    dialIntent.setData(Uri.parse("tel:5038518074"));
-//                    startActivity(dialIntent);
-//                }
+                String nineOneOne = "5036168379";
+                String poisonControl = "5038518074";
+                String suicideHotline = "5036168379";
 
-                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-                dialIntent.setData(Uri.parse("tel:5038518074"));
-                startActivity(dialIntent);
+                //get item clicked from list
+                String number = list_array.get(i);
+
+                switch(number) {
+                    case "Emergency Phone Numbers:": break;
+                    case "911": call(nineOneOne);
+                            break;
+                    case "Poison Control": call(poisonControl);
+                            break;
+                    case "Suicide Hotline": call(suicideHotline);
+                            break;
+                }
+
+//                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+//                dialIntent.setData(Uri.parse("tel:5038518074"));
+//                startActivity(dialIntent);
             }
         });
     }
