@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Intent sa_intent;
     Intent symptom_intent;
     Intent settings_intent;
+    Intent hotline_intent;
     Intent psytherapy_intent;
     Intent support_intent;
     String support = new String("Support Groups");
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     String abuse = new String("Abuse");
     String assault = new String("Sexual Assault");
     String depression = new String("Depression");
+    String hotlines = new String("Hotlines");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -169,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = list_array.get(i);
+                if(hotlines.equals(selectedItem)){
+                    startActivity(hotline_intent);
+                }
                 if(support.equals(selectedItem)){
                     startActivity(support_intent);
                 }
@@ -215,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         sa_intent = new Intent(this, SexualAssaultActivity.class);
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         settings_intent = new Intent(this, SettingsActivity.class);
+        hotline_intent = new Intent(this, HotlineActivity.class);
         psytherapy_intent = new Intent(this, PsytherapyActivity.class);
         support_intent = new Intent(this, SupportActivity.class);
         mTextMessage = (TextView) findViewById(R.id.message);
