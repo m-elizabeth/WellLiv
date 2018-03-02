@@ -19,7 +19,6 @@ package="com.cs361.se15.wellliv">
         android:theme="@style/WellLiveTheme">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
@@ -65,6 +64,14 @@ package="com.cs361.se15.wellliv">
     <activity
         android:name="com.cs361.se15.wellliv.HotlineActivity"
         android:label="@string/title_hotlines"
+        android:theme="@style/WellLiveTheme.NoActionBar" />
+    <activity
+        android:name=".PsytherapyActivity"
+        android:label="@string/title_psychotherapy"
+        android:theme="@style/WellLiveTheme.NoActionBar" />
+    <activity
+        android:name=".SupportActivity"
+        android:label="@string/title_supportgroups"
         android:theme="@style/WellLiveTheme.NoActionBar" />
 </application>
 

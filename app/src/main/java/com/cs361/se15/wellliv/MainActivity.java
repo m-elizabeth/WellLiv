@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     Intent symptom_intent;
     Intent settings_intent;
     Intent hotline_intent;
+    Intent psytherapy_intent;
+    Intent support_intent;
+    String support = new String("Support Groups");
+    String psytherapy = new String("Psychotherapy");
     String ptsd = new String("PTSD");
     String abuse = new String("Abuse");
     String assault = new String("Sexual Assault");
@@ -112,10 +116,6 @@ public class MainActivity extends AppCompatActivity {
                     case "Suicide Hotline": call(suicideHotline);
                             break;
                 }
-
-//                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-//                dialIntent.setData(Uri.parse("tel:5038518074"));
-//                startActivity(dialIntent);
             }
         });
     }
@@ -174,15 +174,12 @@ public class MainActivity extends AppCompatActivity {
                 if(hotlines.equals(selectedItem)){
                     startActivity(hotline_intent);
                 }
-//                if(abuse.equals(selectedItem)){
-//                    startActivity(abuse_intent);
-//                }
-//                if(depression.equals(selectedItem)){
-//                    startActivity(dep_intent);
-//                }
-//                if(assault.equals(selectedItem)){
-//                    startActivity(sa_intent);
-//                }
+                if(support.equals(selectedItem)){
+                    startActivity(support_intent);
+                }
+                if(psytherapy.equals(selectedItem)){
+                    startActivity(psytherapy_intent);
+                }
             }
         });
     }
@@ -224,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         settings_intent = new Intent(this, SettingsActivity.class);
         hotline_intent = new Intent(this, HotlineActivity.class);
+        psytherapy_intent = new Intent(this, PsytherapyActivity.class);
+        support_intent = new Intent(this, SupportActivity.class);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

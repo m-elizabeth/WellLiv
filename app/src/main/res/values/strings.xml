@@ -42,6 +42,8 @@
 
     <string name="add_header">How are you feeling today?</string>
     <string name="change_code"><u>Change your passcode?</u></string>
+    <string name="title_activity_psytherapy">PsytherapyActivity</string>
+    <string name="title_activity_support">SupportActivity</string>
 
 
 </resources>
