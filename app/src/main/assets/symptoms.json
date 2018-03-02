@@ -1,0 +1,10 @@
+{
+  "3/15/2018": {
+    "date" : 3152018,
+    "symptoms" : ["tired", "anxious", "sad"]
+  },
+  "3/28/2018": {
+    "date" : 3282018,
+    "symptoms" : ["headache", "angry"]
+  }
+}

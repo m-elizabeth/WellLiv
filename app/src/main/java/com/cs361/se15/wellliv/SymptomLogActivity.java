@@ -2,6 +2,7 @@ package com.cs361.se15.wellliv;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,14 @@ import android.view.View;
 import android.widget.ActionMenuView;
 import android.widget.CalendarView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class SymptomLogActivity extends AppCompatActivity {
 
@@ -51,11 +60,11 @@ public class SymptomLogActivity extends AppCompatActivity {
         return true;
     }
 
-    public void createDialog(String date){
+    public void createDialog(String date, String list){
         AlertDialog.Builder dialog = new AlertDialog.Builder(SymptomLogActivity.this);
         dialog.setCancelable(false);
         dialog.setTitle(date);
-        dialog.setMessage("Symptoms:" );
+        dialog.setMessage("Symptoms: \n"+list);
         dialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -73,6 +82,38 @@ public class SymptomLogActivity extends AppCompatActivity {
         alert.show();
     }
 
+    public String loadJSON(){
+        String json = null;
+        try{
+            AssetManager assetManager = getApplicationContext().getAssets();
+            InputStream is = assetManager.open("symptoms.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        }
+        catch(IOException e){
+            return "failed load";
+        }
+        return json;
+    }
+
+    public String parseJSON(String date){
+        String ret = " ";
+        int i;
+        try {
+            JSONObject jsonMain = new JSONObject(loadJSON());
+            JSONObject symptoms = jsonMain.getJSONObject(date);
+            JSONArray symList = symptoms.getJSONArray("symptoms");
+            for(i = 0; i < symList.length(); i++){
+                ret += symList.getString(i) +" \n ";
+            }
+        } catch (JSONException e) {
+            return "failed parse";
+        }
+        return ret;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +136,9 @@ public class SymptomLogActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 month++;
-                createDialog(""+month+"/"+day+"/"+year);
+                String date = ""+month+"/"+day+"/"+year;
+                String symptomsList = parseJSON(date);
+                createDialog(""+month+"/"+day+"/"+year, symptomsList);
             }
         });
 
