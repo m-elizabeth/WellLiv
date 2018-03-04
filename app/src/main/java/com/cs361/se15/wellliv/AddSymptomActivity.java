@@ -2,11 +2,14 @@ package com.cs361.se15.wellliv;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonWriter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,8 +23,23 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +47,6 @@ import java.util.Map;
 
 public class AddSymptomActivity extends AppCompatActivity {
 
-    private ActionMenuView amvMenu;
     Intent symptom_intent;
     Intent home_intent;
     Intent settings_intent;
@@ -65,20 +82,44 @@ public class AddSymptomActivity extends AppCompatActivity {
         return true;
     }
 
-    public String loadJSON(String date){
-        String json = null;
-        try{
-            InputStream is = getAssets().open("symptoms.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
+    public void writeJsonStream(OutputStream out, String date, String [] list) throws IOException {
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
+        writer.setIndent("  ");
+        writer.beginObject();
+        writer.name(date);
+        writeJsonArray(writer, list);
+        writer.endObject();
+        writer.close();
+    }
+
+    public void writeJsonArray(JsonWriter writer, String [] list){
+        try {
+            writer.beginObject();
+            writer.name("symptoms:");
+            writer.beginArray();
+            writer.value(list[0]);
+            writer.endArray();
+            writer.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch(IOException e){
-            return null;
+    }
+
+    protected void logSymptoms(String date, String [] list){
+        // parse existing/init new JSON
+        OutputStream out = null;
+        File outFile = new File(getExternalFilesDir(null), "symptoms.json");
+        try {
+            out = new FileOutputStream(outFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        return json;
+        try {
+            writeJsonStream(out, date, list);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -100,6 +141,9 @@ public class AddSymptomActivity extends AppCompatActivity {
         List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
         List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
 
+        final String [] symptomsLogged = {"sad", "anxious"};
+        int logCount = 0;
+
         //Add list data
         for(int i = 0; i < groupItems.length; i++){
             Map<String, String> curGroupMap = new HashMap<String, String>();
@@ -117,7 +161,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         // define arrays for displaying data in Expandable list view
         String groupFrom[] = {NAME};
         int groupTo[] = {R.id.textViewParent};
-        String childFrom[] = {NAME};
+        final String childFrom[] = {NAME};
         int childTo[] = {R.id.textViewChild};
 
         // Set up the adapter
@@ -150,7 +194,7 @@ public class AddSymptomActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                 int cind = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(childPosition));
-                /*Toast.makeText(getApplicationContext(), "Child Name Is :" + childItems[groupPosition][childPosition], Toast.LENGTH_LONG).show();*/
+                //symptomsLogged[0] = childItems[cind][0];
                 return false;
             }
         });
@@ -159,6 +203,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         log_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logSymptoms("3/3/2018", symptomsLogged);
                 Toast.makeText(getApplicationContext(), "Logged", Toast.LENGTH_LONG).show();
                 startActivity(symptom_intent);
             }

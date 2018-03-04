@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,9 +26,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 public class SymptomLogActivity extends AppCompatActivity {
 
@@ -82,20 +89,68 @@ public class SymptomLogActivity extends AppCompatActivity {
         alert.show();
     }
 
+    private void copyAssets() {
+        AssetManager assetManager = getApplicationContext().getAssets();
+        String[] files = null;
+        try {files = assetManager.list("");
+        } catch (IOException e) {Log.e("tag", "Failed to get asset file list.", e);}
+        if (files != null) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = assetManager.open("symptoms.json");
+                File outFile = new File(getExternalFilesDir(null), "symptoms.json");
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+            } catch (IOException e) {
+                Log.e("tag", "Failed to copy asset file: " + "symptoms.json", e);
+            } finally {
+                if (in != null) {
+                    try {in.close();} catch (IOException e) {}
+                }
+                if (out != null) {
+                    try {out.close();} catch (IOException e) {}
+                }
+            }
+        }
+    }
+
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
+    }
+
+    public static String getStringFromFile(String filePath) throws Exception {
+        File fl = new File(filePath);
+        FileInputStream fin = new FileInputStream(fl);
+        String ret = convertStreamToString(fin);
+        //Make sure you close all streams.
+        fin.close();
+        return ret;
+    }
+
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        return sb.toString();
+    }
+
     public String loadJSON(){
         String json = null;
-        try{
-            AssetManager assetManager = getApplicationContext().getAssets();
-            InputStream is = assetManager.open("symptoms.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
+        File JSONfile = new File(getExternalFilesDir(null), "symptoms.json");
+        try {
+            json = getStringFromFile(JSONfile.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch(IOException e){
-            return "failed load";
-        }
+        Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
         return json;
     }
 
@@ -119,6 +174,7 @@ public class SymptomLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptom_log);
+        copyAssets();
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         home_intent = new Intent(this, MainActivity.class);
