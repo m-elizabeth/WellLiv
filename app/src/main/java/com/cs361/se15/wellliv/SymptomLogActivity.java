@@ -100,7 +100,7 @@ public class SymptomLogActivity extends AppCompatActivity {
             try {
                 in = assetManager.open("symptoms.json");
                 File outFile = new File(getExternalFilesDir(null), "symptoms.json");
-                out = new FileOutputStream(outFile);
+                out = new FileOutputStream(outFile, true);
                 copyFile(in, out);
             } catch (IOException e) {
                 Log.e("tag", "Failed to copy asset file: " + "symptoms.json", e);
@@ -174,7 +174,11 @@ public class SymptomLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptom_log);
-        copyAssets();
+
+        File JSONfile = new File(getExternalFilesDir(null), "symptoms.json");
+        if(!JSONfile.exists()) {
+            copyAssets();
+        }
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
         home_intent = new Intent(this, MainActivity.class);
@@ -197,6 +201,9 @@ public class SymptomLogActivity extends AppCompatActivity {
                 createDialog(""+month+"/"+day+"/"+year, symptomsList);
             }
         });
+
+        File delete = new File(getExternalFilesDir(null), "symptoms.json");
+        delete.delete();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -1,5 +1,6 @@
 package com.cs361.se15.wellliv;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -87,35 +88,35 @@ public class AddSymptomActivity extends AppCompatActivity {
         writer.setIndent("  ");
         writer.beginObject();
         writer.name(date);
+        writer.beginObject();
+        writer.name("symptoms");
         writeJsonArray(writer, list);
+        writer.endObject();
         writer.endObject();
         writer.close();
     }
 
-    public void writeJsonArray(JsonWriter writer, String [] list){
-        try {
-            writer.beginObject();
-            writer.name("symptoms:");
+    public void writeJsonArray(JsonWriter writer, String [] list) throws IOException{
             writer.beginArray();
             writer.value(list[0]);
+            writer.value(list[1]);
             writer.endArray();
-            writer.endObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     protected void logSymptoms(String date, String [] list){
         // parse existing/init new JSON
         OutputStream out = null;
         File outFile = new File(getExternalFilesDir(null), "symptoms.json");
+        byte [] next = {',', '\n'};
         try {
-            out = new FileOutputStream(outFile);
+            out = new FileOutputStream(outFile, false);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         try {
             writeJsonStream(out, date, list);
+            out.write(next);
+            out.flush();
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -140,9 +141,6 @@ public class AddSymptomActivity extends AppCompatActivity {
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
         List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
-
-        final String [] symptomsLogged = {"sad", "anxious"};
-        int logCount = 0;
 
         //Add list data
         for(int i = 0; i < groupItems.length; i++){
@@ -194,7 +192,8 @@ public class AddSymptomActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                 int cind = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(childPosition));
-                //symptomsLogged[0] = childItems[cind][0];
+                @SuppressLint({"NewApi", "LocalSuppress"}) String sym = parent.getChildAt(childPosition).getTransitionName();
+                Toast.makeText(getApplicationContext(), sym, Toast.LENGTH_LONG).show();
                 return false;
             }
         });
@@ -203,7 +202,9 @@ public class AddSymptomActivity extends AppCompatActivity {
         log_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logSymptoms("3/3/2018", symptomsLogged);
+                String [] symptomsLogged = {"sad", "anxious"};
+                int logCount = 0;
+                logSymptoms("3/23/2018", symptomsLogged);
                 Toast.makeText(getApplicationContext(), "Logged", Toast.LENGTH_LONG).show();
                 startActivity(symptom_intent);
             }
