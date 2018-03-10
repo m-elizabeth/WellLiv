@@ -1,12 +1,16 @@
 package com.cs361.se15.wellliv;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonWriter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,8 +24,23 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +48,6 @@ import java.util.Map;
 
 public class AddSymptomActivity extends AppCompatActivity {
 
-    private ActionMenuView amvMenu;
     Intent symptom_intent;
     Intent home_intent;
     Intent settings_intent;
@@ -65,20 +83,44 @@ public class AddSymptomActivity extends AppCompatActivity {
         return true;
     }
 
-    public String loadJSON(String date){
-        String json = null;
-        try{
-            InputStream is = getAssets().open("symptoms.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
+    public void writeJsonStream(OutputStream out, String date, String [] list) throws IOException {
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
+        writer.setIndent("  ");
+        writer.beginObject();
+        writer.name(date);
+        writer.beginObject();
+        writer.name("symptoms");
+        writeJsonArray(writer, list);
+        writer.endObject();
+        writer.endObject();
+        writer.close();
+    }
+
+    public void writeJsonArray(JsonWriter writer, String [] list) throws IOException{
+            writer.beginArray();
+            writer.value(list[0]);
+            writer.value(list[1]);
+            writer.endArray();
+    }
+
+    protected void logSymptoms(String date, String [] list){
+        // parse existing/init new JSON
+        OutputStream out = null;
+        File outFile = new File(getExternalFilesDir(null), "symptoms.json");
+        byte [] next = {',', '\n'};
+        try {
+            out = new FileOutputStream(outFile, false);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        catch(IOException e){
-            return null;
+        try {
+            writeJsonStream(out, date, list);
+            out.write(next);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return json;
     }
 
     @Override
@@ -117,7 +159,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         // define arrays for displaying data in Expandable list view
         String groupFrom[] = {NAME};
         int groupTo[] = {R.id.textViewParent};
-        String childFrom[] = {NAME};
+        final String childFrom[] = {NAME};
         int childTo[] = {R.id.textViewChild};
 
         // Set up the adapter
@@ -150,7 +192,8 @@ public class AddSymptomActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                 int cind = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(childPosition));
-                /*Toast.makeText(getApplicationContext(), "Child Name Is :" + childItems[groupPosition][childPosition], Toast.LENGTH_LONG).show();*/
+                @SuppressLint({"NewApi", "LocalSuppress"}) String sym = parent.getChildAt(childPosition).getTransitionName();
+                Toast.makeText(getApplicationContext(), sym, Toast.LENGTH_LONG).show();
                 return false;
             }
         });
@@ -159,6 +202,9 @@ public class AddSymptomActivity extends AppCompatActivity {
         log_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String [] symptomsLogged = {"sad", "anxious"};
+                int logCount = 0;
+                logSymptoms("3/23/2018", symptomsLogged);
                 Toast.makeText(getApplicationContext(), "Logged", Toast.LENGTH_LONG).show();
                 startActivity(symptom_intent);
             }

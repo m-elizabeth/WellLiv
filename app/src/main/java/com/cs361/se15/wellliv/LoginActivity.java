@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,8 +31,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Intent;
@@ -70,27 +80,75 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    public String loadJSON(){
-        String json = null;
-        try{
-            AssetManager assetManager = getApplicationContext().getAssets();
-            InputStream is = assetManager.open("passcode.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
+    private void copyAssets(String filename, Boolean append) {
+        AssetManager assetManager = getApplicationContext().getAssets();
+        String[] files = null;
+        try {files = assetManager.list("");
+        } catch (IOException e) {
+            Log.e("tag", "Failed to get asset file list.", e);}
+        if (files != null) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = assetManager.open(filename);
+                File outFile = new File(getExternalFilesDir(null), filename);
+                out = new FileOutputStream(outFile, append);
+                copyFile(in, out);
+            } catch (IOException e) {
+                Log.e("tag", "Failed to copy asset file: " + filename, e);
+            } finally {
+                if (in != null) {
+                    try {in.close();} catch (IOException e) {}
+                }
+                if (out != null) {
+                    try {out.close();} catch (IOException e) {}
+                }
+            }
         }
-        catch(IOException e){
-            return "failed load";
+    }
+
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
+    }
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public static String getStringFromFile(String filePath) throws Exception {
+        File fl = new File(filePath);
+        FileInputStream fin = new FileInputStream(fl);
+        String ret = convertStreamToString(fin);
+        //Make sure you close all streams.
+        fin.close();
+        return ret;
+    }
+
+    public String loadJSON(String filename){
+        String json = null;
+        File JSONfile = new File(getExternalFilesDir(null), filename);
+        try {
+            json = getStringFromFile(JSONfile.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return json;
     }
 
-    public String parseJSON(){
+    public String parseJSON(String filename){
         String ret = " ";
         try {
-            JSONObject jsonMain = new JSONObject(loadJSON());
+            JSONObject jsonMain = new JSONObject(loadJSON(filename));
             ret = jsonMain.getString("passcode");
         } catch (JSONException e) {
             return "failed parse";
@@ -98,17 +156,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return ret;
     }
 
+    public Boolean writeJSON(String code){
+        BufferedWriter bufferedWriter = null;
+        File codeFile = new File(getExternalFilesDir(null), "passcode.json");
+        Boolean written = true;
+        JSONObject jsonMain;
+        try {
+            jsonMain = new JSONObject(loadJSON("passcode.json"));
+            FileWriter fileWriter = new FileWriter(codeFile);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            jsonMain.put("passcode", code);
+            bufferedWriter.write(jsonMain.toString());
+        } catch (Exception e){
+            Log.e("Put JSON failed", " sad");
+        } finally {
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return written;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        final Boolean newCode = passcodeExists();
         // Set up the login form.
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptLogin(newCode);
                     return true;
                 }
                 return false;
@@ -117,14 +199,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         //Check for passcode set up
-        if(!passcodeExists()){
-            Toast.makeText(getApplicationContext(), "Create a new passcode", Toast.LENGTH_LONG).show();
+        if(!newCode){
             mEmailSignInButton.setText(R.string.create_passcode);
+        }
+        else {
+            mEmailSignInButton.setText(R.string.action_sign_in);
         }
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptLogin(newCode);
             }
         });
 
@@ -133,7 +217,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     protected Boolean passcodeExists(){
-        String passcode = parseJSON();
+        File JSONpasscode = new File(getExternalFilesDir(null), "passcode.json");
+        if(!(JSONpasscode.exists())){
+            copyAssets("passcode.json", false);
+        }
+        String passcode = parseJSON("passcode.json");
         if(passcode.equals("0")) {
             return false;
         }
@@ -162,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptLogin(Boolean newCode) {
         if (mAuthTask != null) {
             return;
         }
@@ -172,6 +260,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Store values at the time of the login attempt.
         String password = mPasswordView.getText().toString();
+
+        if(!newCode){
+            Boolean ret = writeJSON(password);
+        }
 
         boolean cancel = false;
         View focusView = null;
@@ -200,7 +292,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        String passcode = parseJSON();
+        String passcode = parseJSON("passcode.json");
         if(passcode.equals(password)){
             return true;
         }
@@ -299,13 +391,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
