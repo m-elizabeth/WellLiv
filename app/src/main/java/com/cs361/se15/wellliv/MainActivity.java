@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onItemClick: number: " + list_array.get(i));
 
                 //Phone numbers
-                String nineOneOne = "5036168379";
-                String poisonControl = "5038518074";
-                String suicideHotline = "5036168379";
+                String nineOneOne = "911";
+                String poisonControl = "18002221222";
+                String suicideHotline = "18002738255";
 
                 //get item clicked from list
                 String number = list_array.get(i);
