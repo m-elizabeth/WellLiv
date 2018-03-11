@@ -33,18 +33,18 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Calendar;
+import android.text.format.DateFormat;
 
 public class AddSymptomActivity extends AppCompatActivity {
 
@@ -54,6 +54,8 @@ public class AddSymptomActivity extends AppCompatActivity {
     private static final String NAME = "NAME";
     private SimpleExpandableListAdapter mAdapter;
     ExpandableListView simpleExpandableListView;
+    String [] symptomsLogged = new String[15];
+    int logCount = 0;
     private String groupItems[] = {"Physical", "Mental", "Mood"};
     private String[][] childItems =
             {{"Tired", "Low Appetite", "Insomnia", "Headache", "Pain"},
@@ -83,43 +85,76 @@ public class AddSymptomActivity extends AppCompatActivity {
         return true;
     }
 
-    public void writeJsonStream(OutputStream out, String date, String [] list) throws IOException {
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
-        writer.setIndent("  ");
-        writer.beginObject();
-        writer.name(date);
-        writer.beginObject();
-        writer.name("symptoms");
-        writeJsonArray(writer, list);
-        writer.endObject();
-        writer.endObject();
-        writer.close();
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        return sb.toString();
     }
 
-    public void writeJsonArray(JsonWriter writer, String [] list) throws IOException{
-            writer.beginArray();
-            writer.value(list[0]);
-            writer.value(list[1]);
-            writer.endArray();
+    public static String getStringFromFile(String filePath) throws Exception {
+        File fl = new File(filePath);
+        FileInputStream fin = new FileInputStream(fl);
+        String ret = convertStreamToString(fin);
+        //Make sure you close all streams.
+        fin.close();
+        return ret;
     }
 
-    protected void logSymptoms(String date, String [] list){
-        // parse existing/init new JSON
-        OutputStream out = null;
-        File outFile = new File(getExternalFilesDir(null), "symptoms.json");
-        byte [] next = {',', '\n'};
+    public String loadJSON(String filename){
+        String json = null;
+        File JSONfile = new File(getExternalFilesDir(null), filename);
         try {
-            out = new FileOutputStream(outFile, false);
-        } catch (FileNotFoundException e) {
+            json = getStringFromFile(JSONfile.toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return json;
+    }
+
+    protected JSONObject writeObj(String date, String [] syms, int num){
+        JSONObject newObj = new JSONObject();
         try {
-            writeJsonStream(out, date, list);
-            out.write(next);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
+            newObj.put("date", date);
+            JSONArray newArr = new JSONArray();
+            for(int i = 0; i < num; i++){
+                newArr.put(syms[i]);
+            }
+            newObj.put("symptoms", newArr);
+        } catch (JSONException e) {
             e.printStackTrace();
+        }
+        return newObj;
+    }
+
+    protected void logSymptoms(String date, String [] list, int num){
+        // parse existing/init new JSON
+        OutputStream out = null;
+        BufferedWriter bufferedWriter = null;
+        JSONObject mainObj;
+        JSONArray mainArr;
+        File outFile = new File(getExternalFilesDir(null), "symptoms.json");
+        try {
+            mainObj = new JSONObject(loadJSON("symptoms.json"));
+            mainArr = mainObj.getJSONArray("logs");
+            FileWriter fileWriter = new FileWriter(outFile);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            //create object to put in array
+            JSONObject newObj = writeObj(date, list, num);
+            mainArr.put(newObj);
+            bufferedWriter.write(mainObj.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -140,7 +175,7 @@ public class AddSymptomActivity extends AppCompatActivity {
 
         simpleExpandableListView = (ExpandableListView) findViewById(R.id.simpleExpandableListView);
         List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
-        List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
+        final List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
 
         //Add list data
         for(int i = 0; i < groupItems.length; i++){
@@ -191,9 +226,11 @@ public class AddSymptomActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                int cind = parent.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(childPosition));
-                @SuppressLint({"NewApi", "LocalSuppress"}) String sym = parent.getChildAt(childPosition).getTransitionName();
-                Toast.makeText(getApplicationContext(), sym, Toast.LENGTH_LONG).show();
+                String message;
+                TextView tx = (TextView) v;
+                message=tx.getText().toString();
+                symptomsLogged[logCount] = message;
+                logCount++;
                 return false;
             }
         });
@@ -202,9 +239,14 @@ public class AddSymptomActivity extends AppCompatActivity {
         log_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String [] symptomsLogged = {"sad", "anxious"};
-                int logCount = 0;
-                logSymptoms("3/23/2018", symptomsLogged);
+                Calendar date = Calendar.getInstance();
+                String month = date.get(Calendar.MONTH)+"";
+                int monthInt = (int) Integer.parseInt(month);
+                monthInt++;
+                int day = date.get(Calendar.DAY_OF_MONTH);
+                String year         = (String) DateFormat.format("yyyy", date); // 2013
+                String today = monthInt + "/" +day + "/" + year;
+                logSymptoms(today, symptomsLogged, logCount);
                 Toast.makeText(getApplicationContext(), "Logged", Toast.LENGTH_LONG).show();
                 startActivity(symptom_intent);
             }

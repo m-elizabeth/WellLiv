@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SymptomLogActivity extends AppCompatActivity {
 
@@ -150,7 +153,6 @@ public class SymptomLogActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
         return json;
     }
 
@@ -159,13 +161,23 @@ public class SymptomLogActivity extends AppCompatActivity {
         int i;
         try {
             JSONObject jsonMain = new JSONObject(loadJSON());
-            JSONObject symptoms = jsonMain.getJSONObject(date);
-            JSONArray symList = symptoms.getJSONArray("symptoms");
-            for(i = 0; i < symList.length(); i++){
-                ret += symList.getString(i) +" \n ";
+            JSONArray arrayMain = jsonMain.getJSONArray("logs");
+            JSONArray arraysyms = null;
+            for(i = 0; i < arrayMain.length(); i++){
+                JSONObject cur = arrayMain.getJSONObject(i);
+                if(date.equals(cur.getString("date"))){
+                    arraysyms = cur.getJSONArray("symptoms");
+                }
+            }
+            if(arraysyms == null)
+                return "No symptoms logged";
+            for(i = 0; i < arraysyms.length(); i++){
+                if(!(arraysyms.getString(i).equals(""))){
+                    ret += arraysyms.getString(i) +" \n ";
+                }
             }
         } catch (JSONException e) {
-            return "failed parse";
+            return "No symptoms logged";
         }
         return ret;
     }
@@ -175,9 +187,13 @@ public class SymptomLogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptom_log);
 
+        //File delete = new File(getExternalFilesDir(null), "symptoms.json");
+        //delete.delete();
+
         File JSONfile = new File(getExternalFilesDir(null), "symptoms.json");
         if(!JSONfile.exists()) {
             copyAssets();
+            Toast.makeText(getApplicationContext(), "copied", Toast.LENGTH_LONG).show();
         }
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);
@@ -201,9 +217,6 @@ public class SymptomLogActivity extends AppCompatActivity {
                 createDialog(""+month+"/"+day+"/"+year, symptomsList);
             }
         });
-
-        File delete = new File(getExternalFilesDir(null), "symptoms.json");
-        delete.delete();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
