@@ -38,13 +38,79 @@
     <string name="title_psychotherapy">Psychotherapy</string>
     <string name="title_supportgroups">Support Groups</string>
 
-    <string name="text_filler">Text here</string>
+    <string name="text_filler">test</string>
+    <string name="text_depression">
+        <b>Depression Definitions:</b>\n\nClinical depression is a consistent depressed mood,
+        lasting longer than two weeks, in which an individual loses interest and pleasure in their regular activities.
+        Depression affects an individuals’ daily life including personal relationships, work and their mental and physical health.
+        Symptoms may be mild to severe and may be short-term or long-lasting. The most severe cases of depression may lead to suicide or attempted suicide.\n\n
+        <b>Statistics:</b>\n\n
+        <li>Depression is the leading cause of disability in the United States among individuals ages 15-44</li>\n
+        <li>2/3 of individuals with depression do not seek treatment.</li>\n
+        <li>For those that receive treatment for the disorder, about 80% see an improvement within 6 weeks of their treatment.</li>\n
+        <li>The Center for Disease Control estimated over 44,000 suicides occurred in 2015.</li>\n
+        <li>Suicide is in the top 10 leading causes of death in the United States.</li>\n\n
+        <b>Symptoms of Depression:</b>\n\n
+        <li>Loss of interest and pleasure in regular activities/hobbies</li>\n
+        <li>General apathy</li>\n
+        <li>Excessive sleep</li>\n
+        <li>Suicidal thoughts</li>\n
+        <li>Social isolation</li>\n\n
+        <b>Sources/Additional Information</b>\n\n
+        <li>Resources to Recover: rtor.org</li>\n
+        <li>National Network of Depression Centers: nndc.org</li>\n
+        <li>Center for Disease Control: cdc.gov</li>\n\n
+    </string>
+    <string name="text_abuse">
+        <b>Abuse Definitions:</b>\n\nAbuse can come in many different forms as physical and emotional abuse are just broad categories for the many different ways a person can be abused.
+        They often inflict life-altering symptoms onto survivors of abuse depending on the type of abuse.
+        These symptoms can be managed through therapy and can be learned to cope with over time.
+        Abuse doesn’t just ruin the survivor’s life, it also deteriorates the abuser’s life too if they never learn to change.\n\n
+        <b>Statistics:</b>\n\n
+        <li>Relationship violence accounts for 15% of all violent crimes.</li>\n
+        <li>Almost 1/5 domestic violence cases involve a weapon.</li>\n
+        <li>Only 1/3 of victims seek medical treatment for their injuries after being hurt by an intimate partner.</li>\n\n
+        <b>Symptoms of Abuse for Survivors:</b>\n\n
+        <li>Chronic anxiety</li>\n
+        <li>Anger/Irritable</li>\n
+        <li>Signs of PTSD</li>\n
+        <li>Trust issues</li>\n\n
+        <b>Traits of an Abuser:</b>\n\n
+        <li>Overly physical/violent behavior</li>\n
+        <li>Gaslighting</li>\n
+        <li>Forcing others into uncomfortable situations</li>\n\n
+        <b>Sources/Additional Information</b>\n\n
+        <li>Child Abuse Facts: dosomething.org</li>\n
+        <li>Learn About Therapy: goodtherapy.org</li>\n
+        <li>Abuse Statistics: ncadv.org</li>\n\n
+    </string>
+    <string name="text_ptsd">
+        <b>PTSD Definitions:</b>\n\nPosttraumatic stress disorder is an emotional illness that can often be found when the user has undergone devastating or extreme events/experiences.
+        More often than not, war veterans are usually diagnosed with PTSD because of the extreme events that war puts soldiers through.
+        Rape, sexual assault, and abuse are also common events that can cause PTSD.\n\n
+        <b>Statistics:</b>\n\n
+        <li>14% of adults in the U.S. go on to develop PTSD at least once in their lives.</li>\n
+        <li>Women are about twice as likely as men to develop PTSD.</li>\n
+        <li>About 20% of soldiers develop PTSD.</li>\n
+        <li>Somewhat higher rates of PTSD have been found to occur in African Americans, Hispanics, and Native Americans compared to Caucasians in the United States.</li>\n\n
+        <b>Symptoms of PTSD:</b>\n\n
+        <li>Recurring experience of the trauma</li>\n
+        <li>Recurring nightmares</li>\n
+        <li>Extreme avoidance of anything related to the trauma</li>\n
+        <li>Significant negative changes to thinking and behavior</li>\n\n
+        <b>Sources/Additional Information</b>\n\n
+        <li>Info on PTSD: nimh.nih.gov</li>\n
+        <li>PTSD Statistics: healmyptsd.com</li>\n\n
+    </string>
+
     <string name="title_activity_symptom_log">SymptomLogActivity</string>
     <string name="title_add_symptom">Log Symptoms</string>
 
     <string name="add_header">How are you feeling today?</string>
     <string name="log_button">Log</string>
     <string name="change_code"><u>Change your passcode?</u></string>
+    <string name="title_activity_psytherapy">PsytherapyActivity</string>
+    <string name="title_activity_support">SupportActivity</string>
 
 
 </resources>
