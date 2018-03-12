@@ -161,6 +161,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                                             String newCodeInput = newCode.getText().toString();
                                             writeJSON(newCodeInput);
+                                            startActivity(settings_intent);
                                             return true;
                                         }
                                         return false;
