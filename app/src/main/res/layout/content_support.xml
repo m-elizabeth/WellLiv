@@ -8,4 +8,10 @@
     tools:context="com.cs361.se15.wellliv.SupportActivity"
     tools:showIn="@layout/activity_support">
 
+    <include
+        android:id="@+id/myToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/my_toolbar"/>
+
 </android.support.constraint.ConstraintLayout>

@@ -193,7 +193,7 @@ public class SymptomLogActivity extends AppCompatActivity {
         File JSONfile = new File(getExternalFilesDir(null), "symptoms.json");
         if(!JSONfile.exists()) {
             copyAssets();
-            Toast.makeText(getApplicationContext(), "copied", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "copied", Toast.LENGTH_LONG).show();
         }
 
         symptom_intent = new Intent(this, SymptomLogActivity.class);

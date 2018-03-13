@@ -142,7 +142,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String code = parseJSON("passcode.json");
-                Toast.makeText(getApplicationContext(), code, Toast.LENGTH_LONG).show();
                 final EditText oldCode = (EditText) findViewById(R.id.old_passcode);
                 final EditText newCode = (EditText) findViewById(R.id.new_passcode);
                 newCode.setHint(R.string.prompt_new_password);

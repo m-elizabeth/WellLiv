@@ -64,15 +64,18 @@ package="com.cs361.se15.wellliv">
     <activity
         android:name="com.cs361.se15.wellliv.HotlineActivity"
         android:label="@string/title_hotlines"
-        android:theme="@style/WellLiveTheme.NoActionBar" />
+        android:parentActivityName=".MainActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     <activity
-        android:name=".PsytherapyActivity"
+        android:name="com.cs361.se15.wellliv.PsytherapyActivity"
         android:label="@string/title_psychotherapy"
-        android:theme="@style/WellLiveTheme.NoActionBar" />
+        android:parentActivityName=".MainActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     <activity
-        android:name=".SupportActivity"
+        android:name="com.cs361.se15.wellliv.SupportActivity"
         android:label="@string/title_supportgroups"
-        android:theme="@style/WellLiveTheme.NoActionBar" />
+        android:parentActivityName=".MainActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 </application>
 
 </manifest>
