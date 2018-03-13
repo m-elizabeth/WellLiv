@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Intent hotline_intent;
     Intent psytherapy_intent;
     Intent support_intent;
+    Intent home_intent;
     String support = new String("Support Groups");
     String psytherapy = new String("Psychotherapy");
     String ptsd = new String("PTSD");
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
         setSupportActionBar(toolbar);
 
+        home_intent = new Intent(this, MainActivity.class);
         ptsd_intent = new Intent(this, PTSDActivity.class);
         abuse_intent = new Intent(this, AbuseActivity.class);
         dep_intent = new Intent(this, DepressionActivity.class);
