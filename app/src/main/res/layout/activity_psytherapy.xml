@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cs361.se15.wellliv.PsytherapyActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <include
+        android:id="@+id/myToolbar"
+        layout="@layout/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/WellLiveTheme.AppBarOverlay">
+        android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:scrollbarStyle="outsideOverlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myToolbar"
+        app:layout_constraintVertical_bias="0.0">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/WellLiveTheme.PopupOverlay" />
+            android:layout_height="wrap_content">
 
-    </android.support.design.widget.AppBarLayout>
+            <TextView
+                android:id="@+id/textView"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/nav_header_vertical_spacing"
+                android:layout_marginEnd="8dp"
+                android:text="@string/text_psychotherapy"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="71dp" />
 
-    <include layout="@layout/content_psytherapy" />
+        </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+    </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>
