@@ -102,6 +102,39 @@
         <li>Info on PTSD: nimh.nih.gov</li>\n
         <li>PTSD Statistics: healmyptsd.com</li>\n\n
     </string>
+    <string name="text_sexual_assault">
+        <b>Sexual Assault Definitions:</b>\n\nSexual assault can be broadly defined as an unwanted act of either penetration (penal, or object),
+        contact with sexual body parts or exposure of intimate body parts. Definition and laws can vary widely between states.\n\n
+        <b>Statistics:</b>\n\n
+        <li>Females of age 16-19 are 4 times more likely than the general population to be victims of sexual assault.</li>\n
+        <li>On average, there are 321,500 victims (age 12+) of sexual assault each year in America which leads to an estimate of one victim every 98 seconds in the United States.</li>\n
+        <li>Approximately 10% of rape victims are male.</li>\n
+        <li>Women ages 18-24 who are college students are 3 times more likely than women in general to experience sexual violence. Females of the same age who are not enrolled in college are 4 times more likely.</li>\n\n
+        <b>Warning Signs of Sexual Assault:</b>\n\n
+        <li>Their partner is secluding them from other relationships</li>\n
+        <li>Pressured into unsafe sexual practices (i.e. no condoms/birth control)</li>\n
+        <li>Forced to spend less time doing other activities</li>\n
+        <li>Partner is overbearing, manipulative and/or controlling</li>\n\n
+        <b>Sources/Additional Information</b>\n\n
+        <li>Rape, Abuse and Incest National Network: rainn.org</li>\n\n
+    </string>
+    <string name="text_psychotherapy">
+        <b>Some Local Psychotherapists (Ph.D.):</b>
+        \n\nDaniel Golletz, Kimberley Golletz\nPeak Psychological Services, P.C.\npeakpsych.com\n1300 NW Harrison Blvd.\nSuite 100\nCorvallis, OR 97330
+        \n\nDavid Carter\nTherapy for Individuals, Couples, and Families\nalittlewindinmysail.com\n425 SW Madison Ave #1\nCorvallis, OR 97333
+        \n\nSeth Bernstein\nPsychotherapy and Counseling for Individuals and Couples\nsethdbernstein.com\n1220 NW Kings Blvd\nCorvallis, OR 97330
+        \n\n<b>Additional Information on Psychotherapy and Finding a Therapist Near You: psychcentral.com/psychotherapy</b>\n\n
+    </string>
+    <string name="text_support">
+        <b>Sexual Assault Support Groups:</b>
+        \n\naftersilence.org
+        \n\n<b>Abuse Support Groups:</b>
+        \n\n<a href="https://www.dailystrength.org/group/physical-emotional-abuse/">dailystrength.org</a>
+        \n\n<b>Depression Support Groups:</b>
+        \n\n<a href="http://www.dbsalliance.org/site/PageServer?pagename=peer_online_support_groups/">dbsalliance.org</a>
+        \n\n<b>PTSD Support Groups:</b>
+        \n\nptsd.supportgroups.com
+    </string>
 
     <string name="title_activity_symptom_log">SymptomLogActivity</string>
     <string name="title_add_symptom">Log Symptoms</string>

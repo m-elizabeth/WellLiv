@@ -45,9 +45,12 @@ public class HotlineActivity extends AppCompatActivity {
 
     void setListHotlines(){
         list_array.clear();
-        list_array.add("Number 1");
-        list_array.add("Number 2");
-        list_array.add("Number 3");
+        list_array.add("National Sexual Assault Hotline");
+        list_array.add("Substance Abuse and Mental Health Services Administration");
+        list_array.add("Veteran Crisis Line");
+        list_array.add("National Domestic Violence Hotline");
+        list_array.add("PTSD Hotline");
+        list_array.add("National Suicide Prevention Hotline");
 //        mTextMessage.setText(R.string.title_hotlines);
         infoPhoneList = (ListView) findViewById(R.id.hot_list);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -63,19 +66,28 @@ public class HotlineActivity extends AppCompatActivity {
                 Log.d(TAG, "onItemClick: number: " + list_array.get(i));
 
                 //Phone numbers
-                String number1 = "5036168379";
-                String number2 = "5038518074";
-                String number3 = "5036168379";
+                String number1 = "18006564673";
+                String number2 = "18006624357";
+                String number3 = "18002738255";
+                String number4 = "18007997233";
+                String number5 = "8777177873";
+                String number6 = "18002738255";
 
                 //get item clicked from list
                 String number = list_array.get(i);
 
                 switch(number) {
-                    case "Number 1": call(number1);
+                    case "National Sexual Assault Hotline": call(number1);
                         break;
-                    case "Number 2": call(number2);
+                    case "Substance Abuse and Mental Health Services Administration": call(number2);
                         break;
-                    case "Number 3": call(number3);
+                    case "Veteran Crisis Line": call(number3);
+                        break;
+                    case "National Domestic Violence Hotline": call(number4);
+                        break;
+                    case "PTSD Hotline": call(number5);
+                        break;
+                    case "National Suicide Prevention Hotline": call(number6);
                         break;
                 }
 
